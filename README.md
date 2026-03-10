@@ -2,7 +2,7 @@
 
 Веб-приложение для управления GitHub Issues в формате канбан-доски с поддержкой drag & drop, оффлайн-режима и двусторонней синхронизации с GitHub API.
 
-![Стартовая страница](./screenshot.png)
+![Стартовая страница](./public/img.png)
 
 ## Список технологий
 
@@ -30,8 +30,7 @@
 
 ```bash
 # 1. Клонировать репозиторий
-git clone https://github.com/stefashka2810/React_HW_testing.git
-cd issue_board
+git clone https://github.com/stefashka2810/IssueBoard.git
 
 # 2. Установить зависимости
 npm install
@@ -43,17 +42,10 @@ npm run preview
 
 Приложение откроется на `http://localhost:4173`.
 
-### Сборка для продакшена
-
-```bash
-npm run build
-npm run preview
-```
-
 ### Настройка GitHub-синхронизации
 
 1. Перейти в **Settings** (иконка шестерёнки на доске)
-2. Ввести имя репозитория в формате `owner/repo` (например `stefashka2810/React_HW_testing`)
+2. Ввести имя репозитория в формате `owner/repo` (например `stefashka2810/IssueBoard`)
 3. Ввести [GitHub Personal Access Token](https://github.com/settings/tokens) с правами `repo`
 4. Нажать «Сохранить» и вернуться на доску
 5. Нажать кнопку синхронизации ↻

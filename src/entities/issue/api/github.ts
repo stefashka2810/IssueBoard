@@ -71,7 +71,6 @@ export async function createGithubIssue(
 }
 
 
-/** Thrown when GitHub returns 404/410 — issue was deleted. */
 export class GoneError extends Error {
     constructor(status: number, body: string) {
         super(`GitHub API ${status}: ${body}`);

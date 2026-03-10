@@ -43,7 +43,6 @@ export function useSyncIssues() {
             let pushCount = 0;
             const justCreatedIds = new Set<number>();
 
-            // Deduplicate: for each issueId keep only the latest change_status
             const latestChangeStatus = new Map<number, string>();
             for (const op of pending) {
                 if (op.type === "change_status") {
@@ -61,12 +60,10 @@ export function useSyncIssues() {
             }
 
             for (const snapshotOp of pending) {
-                // Re-read the operation from the store to pick up issueRef updates
                 const freshOps = useOperationLog.getState().operations;
                 const op = freshOps.find((o) => o.id === snapshotOp.id);
                 if (!op || op.syncStatus !== "pending") continue;
 
-                // Skip change_status for issues not yet created on GitHub
                 if (op.type === "change_status" && op.issueNumber < 0) {
                     console.warn(`[sync] skipping change_status with temp issueNumber ${op.issueNumber}, removing operation ${op.id}`);
                     opLog.markSynced(op.id);
