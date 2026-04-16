@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Github, Key, Save, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import {GitBranch, Key, Save, CheckCircle2, Eye, EyeOff, ShieldQuestionMark} from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {useSettingsStore} from "../model/settings.store.ts";
@@ -10,6 +10,7 @@ function SettingForm() {
     const token = useSettingsStore((s) => s.token);
     const setRepoFullName = useSettingsStore((s) => s.setRepoFullName);
     const setToken = useSettingsStore((s) => s.setToken);
+    const [openInfo, setOpenInfo] = useState(false);
 
     const [showToken, setShowToken] = useState(false);
     const [saved, setSaved] = useState(false);
@@ -38,10 +39,10 @@ function SettingForm() {
 
             <div className="mb-8">
             <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                Settings
+                Настройки
             </h1>
             <p className="mt-1.5 text-sm text-muted-foreground">
-                Configure your GitHub repository connection.
+                Настройте подключение к вашему репозиторию GitHub.
             </p>
         </div>
 
@@ -55,16 +56,16 @@ function SettingForm() {
                             htmlFor="repoFullName"
                             className="flex items-center gap-2 text-sm font-semibold text-foreground"
                         >
-                            <Github className="h-4 w-4 text-muted-foreground" />
-                            Repository
+                            <GitBranch className="h-4 w-4 text-muted-foreground" />
+                            Репозиторий
                         </label>
                         <p className="text-xs text-muted-foreground">
-                            Full name in <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground">owner/repo</code> format.
+                            Полное название в формате <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground">owner/repo</code>.
                         </p>
                         <input
                             id="repoFullName"
                             type="text"
-                            placeholder="e.g. facebook/react"
+                            placeholder="например, facebook/react"
                             {...register("repoFullName")}
                             className={`h-10 w-full rounded-lg border px-3 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:ring-2 ${
                                 errors.repoFullName
@@ -87,11 +88,16 @@ function SettingForm() {
                             className="flex items-center gap-2 text-sm font-semibold text-foreground"
                         >
                             <Key className="h-4 w-4 text-muted-foreground" />
-                            Personal Access Token
+                            Персональный токен доступа (PAT) <ShieldQuestionMark onClick={() => setOpenInfo(prev => !prev)} strokeWidth={'2'} className={'h-4 w-4 text-primary hover:text-primary/90 hover:cursor-pointer'}/>
                         </label>
+                        {openInfo && (
+                            <div className={'flex flex-row w-fit p-3 text-muted-foreground text-xs rounded-lg bg-muted/50 border border-muted'}>
+                                Ваш токен хранится локально и никуда не отправляется. <br></br>
+                                Вы можете создать его на GitHub в личных настройках пользователя в разделе "Developer settings" → "Personal access tokens" → "Tokens (classic)".
+                            </div>
+                        )}
                         <p className="text-xs text-muted-foreground">
-                            A GitHub PAT with <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground">repo</code> scope.
-                            Your token is stored locally and never sent to third parties.
+                            Токен GitHub с областью доступа <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground">repo</code>.
                         </p>
                         <div className="relative">
                             <input
@@ -108,7 +114,7 @@ function SettingForm() {
                             <button
                                 type="button"
                                 onClick={() => setShowToken(!showToken)}
-                                className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition hover:text-foreground"
+                                className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition hover:text-foreground hover:cursor-pointer"
                             >
                                 {showToken ? (
                                     <EyeOff className="h-4 w-4" />
@@ -130,47 +136,47 @@ function SettingForm() {
                         {saved ? (
                             <span className="inline-flex items-center gap-1.5 text-emerald-600 font-medium">
                                         <CheckCircle2 className="h-3.5 w-3.5" />
-                                        Saved successfully
+                                        Сохранено
                                     </span>
                         ) : isDirty ? (
-                            "You have unsaved changes"
+                            "Есть несохранённые изменения"
                         ) : (
-                            "All settings are saved"
+                            "Все настройки сохранены"
                         )}
                     </div>
                     <button
                         type="submit"
                         disabled={!isDirty || !isValid}
-                        className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer"
                     >
                         <Save className="h-4 w-4" />
-                        Save
+                        Сохранить
                     </button>
                 </div>
             </div>
         </form>
 
         <div className="mt-6 rounded-xl border border-border bg-card p-4">
-            <h3 className="mb-2 text-sm font-semibold text-foreground">Current connection</h3>
+            <h3 className="mb-2 text-sm font-semibold text-foreground">Текущее подключение</h3>
             <div className="space-y-1.5 text-sm">
                 <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground">Repository:</span>
+                    <span className="text-muted-foreground">Репозиторий:</span>
                     {repoFullName ? (
                         <span className="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-600 border border-indigo-200">
                                     {repoFullName}
                                 </span>
                     ) : (
-                        <span className="text-xs italic text-muted-foreground">Not set</span>
+                        <span className="text-xs italic text-muted-foreground">Не задан</span>
                     )}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground">Token:</span>
+                    <span className="text-muted-foreground">Токен:</span>
                     {token ? (
                         <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-600 border border-emerald-200">
                                     ••••••{token.slice(-4)}
                                 </span>
                     ) : (
-                        <span className="text-xs italic text-muted-foreground">Not set</span>
+                        <span className="text-xs italic text-muted-foreground">Не задан</span>
                     )}
                 </div>
             </div>

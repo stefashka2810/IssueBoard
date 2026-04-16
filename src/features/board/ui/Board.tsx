@@ -14,9 +14,9 @@ import {useOperationLog} from "../../sync/model/operationLog.ts";
 import {useOnlineStatus} from "../../../shared/lib/useOnlineStatus.ts";
 
 const STATUS_LABELS: Record<string, string> = {
-    todo: "To Do",
-    in_progress: "In Progress",
-    done: "Done",
+    todo: "К выполнению",
+    in_progress: "В процессе",
+    done: "Выполнено",
 };
 
 function Board() {
@@ -56,7 +56,7 @@ function Board() {
                 sync.mutate();
             }
         }
-    }, [isOnline]);
+    }, [isOnline, sync]);
 
     const filteredIssues = useMemo(() => {
         return issues.filter((issue) => {
@@ -73,9 +73,9 @@ function Board() {
     }, [issues, search, stateFilter, selectedLabels]);
 
     const columns: {id: Status; title: string;}[] = [
-        { id: "todo", title: "To Do" },
-        { id: "in_progress", title: "In Progress" },
-        { id: "done", title: "Done" },
+        { id: "todo", title: "К выполнению" },
+        { id: "in_progress", title: "В процессе" },
+        { id: "done", title: "Выполнено" },
     ];
 
     const resolveConflict = (opId: string, choice: "local" | "remote", op: typeof conflicts[0]) => {
@@ -115,7 +115,7 @@ function Board() {
             {!isOnline && (
                 <div className="mb-4 flex items-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-800 shadow-sm">
                     <WifiOff className="h-4 w-4 shrink-0" />
-                    <span><strong>Offline</strong> — изменения сохраняются локально и синхронизируются при подключении.</span>
+                    <span><strong>Оффлайн</strong> изменения сохраняются локально и синхронизируются при подключении.</span>
                 </div>
             )}
 
@@ -145,7 +145,7 @@ function Board() {
                         onClick={() => sync.mutate()}
                         disabled={sync.isPending || !isConfigured || !isOnline}
                         title={!isConfigured ? "Настройте репо и токен" : !isOnline ? "Нет сети" : "Синхронизировать с GitHub"}
-                        className={`inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-sm font-medium shadow-sm transition disabled:opacity-40 disabled:cursor-not-allowed ${
+                        className={`inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-sm font-medium shadow-sm transition disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer ${
                             sync.isError
                                 ? "border-destructive/50 bg-destructive/5 text-destructive hover:bg-destructive/10"
                                 : sync.isSuccess
@@ -175,7 +175,7 @@ function Board() {
                         <button
                             type="button"
                             onClick={() => setShowCreate(true)}
-                            className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
+                            className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 hover:cursor-pointer"
                         >
                             <Plus className="h-4 w-4" />
                             Новый Issue
@@ -192,14 +192,14 @@ function Board() {
                             <div key={c.id} className="flex items-center gap-3 rounded-lg border border-orange-300 bg-orange-50 px-4 py-3 text-sm shadow-sm">
                                 <AlertTriangle className="h-5 w-5 shrink-0 text-orange-600" />
                                 <div className="flex-1 min-w-0">
-                                    <span className="font-semibold text-orange-900">Conflict</span>
+                                    <span className="font-semibold text-orange-900">Конфликт</span>
                                     <span className="ml-1 text-orange-800">
-                                        #{c.issueNumber} {issue?.title ?? "Unknown issue"}
+                                        #{c.issueNumber} {issue?.title ?? "Неизвестная задача"}
                                     </span>
                                     <div className="mt-0.5 text-xs text-orange-700">
-                                        Local: <strong>{STATUS_LABELS[c.payload.status ?? ""] ?? c.payload.status ?? "?"}</strong>
+                                        Локально: <strong>{STATUS_LABELS[c.payload.status ?? ""] ?? c.payload.status ?? "?"}</strong>
                                         <ArrowRight className="mx-1 inline h-3 w-3" />
-                                        Remote: <strong>{c.conflictRemoteState === "closed" ? "Closed" : "Open"}</strong>
+                                        Удалённо: <strong>{c.conflictRemoteState === "closed" ? "Закрыта" : "Открыта"}</strong>
                                     </div>
                                 </div>
                                 <div className="flex gap-2 shrink-0">
@@ -207,13 +207,13 @@ function Board() {
                                         onClick={() => resolveConflict(c.id, "local", c)}
                                         className="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-blue-700"
                                     >
-                                        Keep Local
+                                        Оставить локально
                                     </button>
                                     <button
                                         onClick={() => resolveConflict(c.id, "remote", c)}
                                         className="rounded-md border border-orange-300 bg-white px-3 py-1.5 text-xs font-medium text-orange-800 transition hover:bg-orange-100"
                                     >
-                                        Accept Remote
+                                        Принять удалённую
                                     </button>
                                 </div>
                             </div>
@@ -268,3 +268,4 @@ function Board() {
 }
 
 export default Board;
+

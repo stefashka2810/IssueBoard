@@ -1,8 +1,8 @@
 import {z} from "zod";
 
 export const SettingSchema = z.object({
-    repoFullName: z.string().trim().min(1, 'Repo full name cannot be empty').regex(/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/, "Repo full name must be in the format 'owner/repo'"),
-    token: z.string().trim().min(1, "Token cannot be empty"),
+    repoFullName: z.string().trim().min(1, 'Полное название репозитория не может быть пустым').regex(/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/, "Полное название репозитория должно быть в формате 'owner/repo'"),
+    token: z.string().trim().min(1, "Токен не может быть пустым"),
 })
 
 export type Setting = z.infer<typeof SettingSchema>;

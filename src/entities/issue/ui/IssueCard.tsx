@@ -6,6 +6,11 @@ const stateColors: Record<string, string> = {
     closed: "bg-purple-500",
 };
 
+const stateLabels: Record<string, string> = {
+    open: "Открыта",
+    closed: "Закрыта",
+};
+
 type IssueCardProps = {
     issue: Issue;
 };
@@ -17,7 +22,7 @@ function IssueCard({ issue }: IssueCardProps) {
             <div className="absolute top-3.5 right-3.5">
                 <span
                     className={`block h-2 w-2 rounded-full ${stateColors[issue.state] ?? "bg-gray-400"}`}
-                    title={issue.state}
+                    title={stateLabels[issue.state] ?? issue.state}
                 />
             </div>
 
@@ -46,7 +51,7 @@ function IssueCard({ issue }: IssueCardProps) {
                     )}
                 </div>
             ) : (
-                <span className="text-[10px] italic text-muted-foreground">No labels</span>
+                <span className="text-[10px] italic text-muted-foreground">Метки отсутствуют</span>
             )}
         </div>
     );

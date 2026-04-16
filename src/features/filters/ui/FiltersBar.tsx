@@ -28,9 +28,9 @@ export function FiltersBar() {
     const hasActiveFilters = search !== "" || state !== "all" || selectedLabels.length > 0;
 
     const stateOptions = [
-        { value: "all" as const, label: "All states", dot: "" },
-        { value: "open" as const, label: "Open", dot: "bg-green-500" },
-        { value: "closed" as const, label: "Closed", dot: "bg-purple-500" },
+        { value: "all" as const, label: "Все состояния", dot: "" },
+        { value: "open" as const, label: "Открытые", dot: "bg-green-500" },
+        { value: "closed" as const, label: "Закрытые", dot: "bg-purple-500" },
     ];
     const currentState = stateOptions.find((o) => o.value === state) ?? stateOptions[0];
 
@@ -59,7 +59,7 @@ export function FiltersBar() {
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Search issues..."
+                            placeholder="Поиск задач..."
                             className="h-9 w-full rounded-lg border border-border bg-background pl-9 pr-4 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/25"
                         />
                         {search && (
@@ -77,7 +77,7 @@ export function FiltersBar() {
                         <button
                             type="button"
                             onClick={() => setStateOpen(!stateOpen)}
-                            className={`inline-flex h-9 w-36 items-center justify-between gap-2 rounded-lg border px-3 text-sm font-medium transition-colors ${
+                            className={`inline-flex h-9 w-max items-center justify-center gap-2 rounded-lg border px-3 text-sm font-medium transition-colors hover:cursor-pointer ${
                                 state !== "all"
                                     ? "border-primary bg-primary/10 text-primary"
                                     : "border-border bg-background text-foreground hover:bg-accent"
@@ -93,7 +93,7 @@ export function FiltersBar() {
                         </button>
 
                         {stateOpen && (
-                            <div className="absolute top-full left-0 z-[100] mt-1.5 min-w-36 rounded-xl border border-border bg-popover p-1.5 shadow-xl">
+                            <div className="absolute top-full left-0 z-100 mt-1.5 w-max rounded-xl border border-border bg-popover p-1.5 shadow-xl hover:cursor-pointer">
                                 {stateOptions.map((opt) => (
                                     <button
                                         key={opt.value}
@@ -105,7 +105,7 @@ export function FiltersBar() {
                                         className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
                                             state === opt.value
                                                 ? "bg-primary/10 text-primary font-semibold"
-                                                : "text-foreground hover:bg-muted"
+                                                : "text-foreground  hover:bg-muted"
                                         }`}
                                     >
                                         {opt.dot ? (
@@ -124,14 +124,14 @@ export function FiltersBar() {
                         <button
                             type="button"
                             onClick={() => setLabelsOpen(!labelsOpen)}
-                            className={`inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-sm font-medium transition-colors ${
+                            className={`inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-sm font-medium transition-colors hover:cursor-pointer ${
                                 selectedLabels.length > 0
                                     ? "border-primary bg-primary/10 text-primary"
                                     : "border-border bg-background text-foreground hover:bg-accent"
                             }`}
                         >
                             <Tag className="h-3.5 w-3.5" />
-                            Labels
+                            Метки
                             {selectedLabels.length > 0 && (
                                 <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
                                     {selectedLabels.length}
@@ -140,10 +140,10 @@ export function FiltersBar() {
                         </button>
 
                         {labelsOpen && (
-                            <div className="absolute top-full left-0 z-[100] mt-1.5 min-w-44 rounded-xl border border-border bg-popover p-1.5 shadow-xl">
+                            <div className="absolute top-full left-0 z-100 mt-1.5 min-w-44 rounded-xl border border-border bg-popover p-1.5 shadow-xl">
                                 {allLabels.length === 0 ? (
                                     <div className="px-3 py-2 text-xs text-muted-foreground">
-                                        No labels
+                                        Меток нет
                                     </div>
                                 ) : (
                                     allLabels.map((label) => {
@@ -181,10 +181,10 @@ export function FiltersBar() {
                         <button
                             type="button"
                             onClick={clearFilters}
-                            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-xs font-medium text-muted-foreground transition hover:bg-red-50 hover:text-destructive hover:border-destructive"
+                            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-sm font-medium text-muted-foreground transition hover:bg-red-50 hover:text-destructive hover:border-destructive hover:cursor-pointer"
                         >
                             <X className="h-3.5 w-3.5" />
-                            Clear
+                            Сбросить
                         </button>
                     )}
                 </div>
@@ -192,7 +192,7 @@ export function FiltersBar() {
                 {hasActiveFilters && (
                     <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-border pt-3">
                         <span className="mr-1 text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
-                            Active:
+                            Активно:
                         </span>
 
                         {state !== "all" && (

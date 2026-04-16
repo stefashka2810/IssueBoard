@@ -32,10 +32,8 @@ export function CreateIssueModal({ open, onClose, onCreate }: CreateIssueModalPr
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            {/* Backdrop */}
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
-            {/* Modal */}
             <div className="relative w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-2xl mx-4">
                 <button
                     onClick={onClose}
@@ -91,14 +89,14 @@ export function CreateIssueModal({ open, onClose, onCreate }: CreateIssueModalPr
                         <button
                             type="button"
                             onClick={onClose}
-                            className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+                            className=" hover:cursor-pointer rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
                         >
                             Отмена
                         </button>
                         <button
                             type="submit"
                             disabled={!title.trim()}
-                            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed"
+                            className="hover:cursor-pointer rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                             Создать
                         </button>
